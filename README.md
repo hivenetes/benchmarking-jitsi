@@ -51,7 +51,7 @@ The benchmark setup consists of
 
 Upon successful configuration, one should be able to access the start the `Jitsi Meet` session as shown below,
 
-<p align="left">
+<p align="center">
   <img src="./docs/jitsi-start.png" width="60%" height="30%"/>
 </p>
 
@@ -89,7 +89,7 @@ Or you can run the [`webrtc-test.sh`](./scripts/webrtc-test.sh) with custom opti
 * `webrtcperf` has the instrumentation to measure the application’s performance running on the droplet
 * We are streaming over 100 Linus Torvalds TED talks to the configured Jitsi server for simulation purposes
 
-<p align="left">
+<p align="center">
   <img src="./docs/jitsi-in-action.png" width="60%" height="30%" />
 </p>
 
@@ -122,8 +122,8 @@ As expected, the Premium CPU-optimized droplets outperformed the Non-Premium dro
 
 > Note: The benchmarking results might vary depending on hardware configuration, software settings, testing methodologies, and the specific workloads. Therefore, it is crucial to interpret benchmarking results cautiously and consider the context and variables involved in each test.
 
-<p align="left">
-  <img src="./docs/stats.png" width="60%" height="30%" />
+<p align="center">
+  <img src="./docs/stats.png" />
 </p>
 
 ### References
