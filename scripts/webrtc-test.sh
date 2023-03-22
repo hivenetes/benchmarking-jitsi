@@ -1,4 +1,4 @@
-/bin/bash
+#!/bin/bash
 
 # Define default values for sessions and tabs per session
 default_sessions=1
@@ -20,6 +20,11 @@ case $key in
     shift # past argument
     shift # past value
     ;;
+    -f|--file)
+    urls_file="$2"
+    shift # past argument
+    shift # past value
+    ;;
     *)    # unknown option
     shift # past argument
     ;;
@@ -30,12 +35,14 @@ done
 sessions="${sessions:-$default_sessions}"
 tabs_per_session="${tabs_per_session:-$default_tabs_per_session}"
 
-# Define an array of URLs
-urls=(
-  "https://meet.hivenetes.com/abhi1"
-  "https://meet.hivenetes.com/abhi2"
-  "https://meet.hivenetes.com/abhi3"
-)
+# Read URLs from file if specified, otherwise use default URLs
+if [ -n "$urls_file" ]; then
+    urls=( $(cat "$urls_file") )
+else
+    urls=(
+      "https://meet.hello.com/benchmark"
+    )
+fi
 
 # Loop through each URL and run the Docker command
 for url in "${urls[@]}"
@@ -48,4 +55,3 @@ do
     --sessions="$sessions" \
     --tabs-per-session="$tabs_per_session"
 done
-
