@@ -17,7 +17,7 @@ In this project, we will pick one of the use cases, "*media streaming*," and ana
 
 The benchmark setup consists of
 
-* [Jitsi server](https://github.com/jitsi/jitsi-meet), a popular open-source video conferencing application that allows users to create and customize their video conferencing server to their specific needs.
+* [Jitsi server](https://marketplace.digitalocean.com/apps/jitsi-server), a popular open-source video conferencing application that allows users to create and customize their video conferencing server to their specific needs.
 * CPU-Optimized Premium droplet
 
     ```code
@@ -130,6 +130,7 @@ As expected, the Premium CPU-optimized droplets outperformed the Non-Premium dro
 
 * [Blog: Premium CPU Optimized Droplets](https://www.digitalocean.com/blog/introducing-premium-cpu-optimized-droplets)
 * [Video: Spin up Premium Droplets](https://youtu.be/SGb14pC7TDs)
+* [Jitsi-App](https://marketplace.digitalocean.com/apps/jitsi-server)
 
 ### Stats for nerds
 
