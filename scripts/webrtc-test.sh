@@ -1,57 +1,44 @@
 #!/bin/bash
 
-# Define default values for sessions and tabs per session
+# Default values
 default_sessions=1
 default_tabs_per_session=2
+default_url="https://meet.hello.com/benchmark"
 
 # Parse command line arguments
-while [[ $# -gt 0 ]]
-do
-key="$1"
-
-case $key in
-    -s|--sessions)
-    sessions="$2"
-    shift # past argument
-    shift # past value
-    ;;
-    -t|--tabs-per-session)
-    tabs_per_session="$2"
-    shift # past argument
-    shift # past value
-    ;;
-    -f|--file)
-    urls_file="$2"
-    shift # past argument
-    shift # past value
-    ;;
-    *)    # unknown option
-    shift # past argument
-    ;;
-esac
+while getopts ":s:t:f:" opt; do
+  case $opt in
+    s) sessions="$OPTARG" ;;
+    t) tabs_per_session="$OPTARG" ;;
+    f) urls_file="$OPTARG" ;;
+    \?) echo "Invalid option -$OPTARG" >&2; exit 1 ;;
+    :) echo "Option -$OPTARG requires an argument" >&2; exit 1 ;;
+  esac
 done
 
-# Use default values if sessions or tabs_per_session are not set
+# Use default values if not set
 sessions="${sessions:-$default_sessions}"
 tabs_per_session="${tabs_per_session:-$default_tabs_per_session}"
 
-# Read URLs from file if specified, otherwise use default URLs
-if [ -n "$urls_file" ]; then
-    urls=( $(cat "$urls_file") )
+# Read URLs from file or use default
+if [ -n "$urls_file" ] && [ -f "$urls_file" ]; then
+    mapfile -t urls < "$urls_file"
 else
-    urls=(
-      "https://meet.hello.com/benchmark"
-    )
+    urls=("$default_url")
 fi
 
-# Loop through each URL and run the Docker command
-for url in "${urls[@]}"
-do
-  docker run -it --rm \
-    -v /dev/shm:/dev/shm \
-    ghcr.io/vpalmisano/webrtcperf \
-    --url="$url" \
-    --url-query='#config.prejoinPageEnabled=false&userInfo.displayName=Participant($s-$t)' \
-    --sessions="$sessions" \
-    --tabs-per-session="$tabs_per_session"
+# Function to run Docker command
+run_docker() {
+    docker run -it --rm \
+        -v /dev/shm:/dev/shm \
+        ghcr.io/vpalmisano/webrtcperf \
+        --url="$1" \
+        --url-query='#config.prejoinPageEnabled=false&userInfo.displayName=Participant($s-$t)' \
+        --sessions="$sessions" \
+        --tabs-per-session="$tabs_per_session"
+}
+
+# Loop through URLs and run Docker command
+for url in "${urls[@]}"; do
+    run_docker "$url"
 done

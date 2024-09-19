@@ -1,27 +1,19 @@
 #!/bin/bash
 
-# Update the package lists and upgrade installed packages
+set -e  # Exit immediately if a command exits with a non-zero status
+
+# Update and upgrade packages
 sudo apt-get update && sudo apt-get upgrade -y
 
-# Install the Jitsi Meet dependencies
+# Install Jitsi Meet dependencies and add repository
 sudo apt-get install -y gnupg2 wget
-
-# Add the Jitsi Meet repository key to the system
 wget -qO - https://download.jitsi.org/jitsi-key.gpg.key | sudo apt-key add -
+echo "deb https://download.jitsi.org stable/" | sudo tee /etc/apt/sources.list.d/jitsi-stable.list > /dev/null
 
-# Add the Jitsi Meet repository to the system
-echo "deb https://download.jitsi.org stable/" | sudo tee /etc/apt/sources.list.d/jitsi-stable.list
-
-# Update the package lists to include the Jitsi Meet repository
+# Install Jitsi Meet
 sudo apt-get update
-
-# Install the Jitsi Meet server and its dependencies
 sudo apt-get install -y jitsi-meet
 
-# Configure the Jitsi Meet server
+# Configure Jitsi Meet and restart services
 sudo /usr/share/jitsi-meet/scripts/install-letsencrypt-cert.sh
-
-# Restart the Jitsi Meet services
-sudo systemctl restart jicofo.service
-sudo systemctl restart jitsi-videobridge2.service
-sudo systemctl restart prosody.service
+sudo systemctl restart jicofo jitsi-videobridge2 prosody
